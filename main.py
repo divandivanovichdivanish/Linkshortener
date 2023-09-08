@@ -54,24 +54,21 @@ def main():
     oauth2_http_header = {"Authorization": os.environ["BITLYTOKEN"]}
     input_url = args.url
     bitlink_id = get_bitlink_id(input_url)
-    if is_bitlink(oauth2_http_header, bitlink_id):
-        try:
+    try:
+        if is_bitlink(oauth2_http_header, bitlink_id):
             total_clicks = count_clicks(
                 bitlink_id,
                 oauth2_http_header,
             )
             print("Переходов по ссылке: ", total_clicks)
-        except requests.exceptions.HTTPError:
-            print("Была введена некорректная ссылка")
-    else:  
-        try:
+        else:  
             bitlink = shorten_url(
-                input_url,
-                oauth2_http_header,
+            input_url,
+            oauth2_http_header,
             )
             print("Битлинк", bitlink)
-        except requests.exceptions.HTTPError:
-            print("Была введена некорректная ссылка")
+    except requests.exceptions.HTTPError:
+        print("Была введена некорректная ссылка")
 
 
 if __name__ == "__main__":
